@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="منوی دیجیتال کافه ادریس" />
+  <title>کافه ادریس | منو</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* ============================================================
+       CAFE EDRIS DIGITAL MENU - Final Build
+       ============================================================ */
+
+    :root {
+      --color-primary: #4a7c59;
+      --color-primary-dark: #3a6347;
+      --color-primary-light: #6a9c79;
+      --color-accent: #c8a96e;
+      --color-accent-light: #e2c99e;
+      --bg-main: #faf9f7;
+      --bg-card: #ffffff;
+      --bg-header: #4a7c59;
+      --bg-nav: rgba(255, 255, 255, 0.95);
+      --bg-category: #f3f0ea;
+      --text-primary: #1a1a1a;
+      --text-secondary: #555555;
+      --text-muted: #888888;
+      --text-on-primary: #ffffff;
+      --border-color: #e8e4dc;
+      --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.06);
+      --shadow-hover: 0 8px 32px rgba(74, 124, 89, 0.15);
+      --shadow-nav: 0 2px 20px rgba(0, 0, 0, 0.08);
+      --font-main: "Vazirmatn", sans-serif;
+      --radius-card: 16px;
+      --radius-pill: 50px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg-main: #0f1510;
+      --bg-card: #1a2418;
+      --bg-header: #1a2418;
+      --bg-nav: rgba(15, 21, 16, 0.97);
+      --bg-category: #1f2d1f;
+      --text-primary: #f0ede8;
+      --text-secondary: #b8b0a0;
+      --text-muted: #7a7268;
+      --text-on-primary: #ffffff;
+      --border-color: #2a3828;
+      --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.3);
+      --shadow-hover: 0 8px 32px rgba(74, 124, 89, 0.25);
+      --shadow-nav: 0 2px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      direction: rtl;
+      transition: background-color var(--transition), color var(--transition);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* LOADING */
+    .loading-screen {
+      position: fixed; inset: 0;
+      background: var(--color-primary);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    .loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .loading-logo { font-size: 2.5rem; font-weight: 900; color: white; letter-spacing: 4px; margin-bottom: 32px; animation: pulse 2s infinite; }
+    .loading-logo span { color: var(--color-accent); }
+    .loading-spinner { width: 48px; height: 48px; border: 3px solid rgba(255,255,255,0.2); border-top-color: var(--color-accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px; }
+    .loading-text { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+    /* HEADER */
+    .site-header {
+      background: linear-gradient(160deg, #3a6347 0%, #4a7c59 40%, #5a8f6a 100%);
+      padding: 0; text-align: center; position: relative; overflow: hidden;
+    }
+    .site-header::after {
+      content: ""; position: absolute; bottom: -2px; left: 0; right: 0; height: 50px;
+      background: var(--bg-main); clip-path: ellipse(54% 100% at 50% 100%);
+      transition: background-color var(--transition);
+    }
+    .header-image-wrapper {
+      position: relative; z-index: 1; width: 100%;
+      display: flex; justify-content: center; align-items: center;
+      padding: 30px 20px 16px;
+    }
+    .header-image {
+      max-width: 260px; width: 60%; height: auto; object-fit: contain; display: block;
+      border-radius: 18px; background: rgba(255,255,255,0.92); padding: 18px 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15); border: 2px solid rgba(255,255,255,0.3);
+    }
+    .header-overlay-content { position: relative; z-index: 2; padding: 0 20px 30px; text-align: center; }
+    .order-notice-text {
+      color: var(--color-accent-light); text-align: center; font-size: 0.95rem; font-weight: 700;
+      letter-spacing: 0.5px; margin-bottom: 8px; padding: 8px 20px;
+      background: rgba(0,0,0,0.2); border-radius: var(--radius-pill); display: inline-block;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .cafe-tagline { color: rgba(255,255,255,0.85); font-size: 0.85rem; font-weight: 500; letter-spacing: 2px; margin-top: 14px; }
+    .data-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.15); border-radius: 50px; padding: 6px 16px;
+      font-size: 0.75rem; color: rgba(255,255,255,0.9); margin-top: 14px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .data-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; animation: blink 2s infinite; }
+    .data-badge .dot.offline { background: var(--color-accent); }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    /* CONTROLS */
+    .controls-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg-nav); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color); box-shadow: var(--shadow-nav);
+      padding: 12px 16px; transition: background-color var(--transition);
+    }
+    .controls-inner { max-width: 760px; margin: 0 auto; display: flex; gap: 10px; align-items: center; }
+    .search-wrapper { flex: 1; position: relative; }
+    .search-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; font-size: 1rem; }
+    .search-input {
+      width: 100%; padding: 10px 42px 10px 16px;
+      border: 1.5px solid var(--border-color); border-radius: var(--radius-pill);
+      background: var(--bg-card); color: var(--text-primary);
+      font-family: var(--font-main); font-size: 0.9rem; outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition); direction: rtl;
+    }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-input:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(74,124,89,0.1); }
+    .dark-toggle {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1.5px solid var(--border-color); background: var(--bg-card);
+      color: var(--text-secondary); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; transition: all var(--transition); flex-shrink: 0;
+    }
+    .dark-toggle:hover { background: var(--color-primary); color: white; border-color: var(--color-primary); transform: scale(1.05); }
+
+    /* CATEGORY NAV */
+    .category-nav-wrapper {
+      position: sticky; top: 69px; z-index: 99;
+      background: var(--bg-nav); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color); transition: background-color var(--transition);
+    }
+    .category-nav {
+      max-width: 760px; margin: 0 auto; display: flex; gap: 8px; padding: 12px 16px;
+      overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; direction: rtl;
+    }
+    .category-nav::-webkit-scrollbar { display: none; }
+    .cat-pill {
+      flex-shrink: 0; padding: 7px 18px; border-radius: var(--radius-pill);
+      border: 1.5px solid var(--border-color); background: transparent;
+      color: var(--text-secondary); font-family: var(--font-main);
+      font-size: 0.82rem; font-weight: 600; cursor: pointer;
+      transition: all var(--transition); white-space: nowrap;
+    }
+    .cat-pill:hover { border-color: var(--color-primary); color: var(--color-primary); }
+    .cat-pill.active { background: var(--color-primary); border-color: var(--color-primary); color: white; box-shadow: 0 4px 12px rgba(74,124,89,0.3); }
+
+    /* MAIN */
+    .main-content { max-width: 760px; margin: 0 auto; padding: 24px 16px 80px; }
+    .category-section { margin-bottom: 40px; animation: fadeUp 0.5s ease both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .category-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--border-color); }
+    .category-icon {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0; box-shadow: 0 4px 12px rgba(74,124,89,0.25);
+    }
+    .category-title { font-size: 1.25rem; font-weight: 800; color: var(--text-primary); }
+    .category-count { margin-right: auto; background: var(--bg-category); color: var(--text-muted); font-size: 0.75rem; font-weight: 600; padding: 3px 10px; border-radius: 50px; }
+    .items-grid { display: flex; flex-direction: column; gap: 10px; }
+
+    /* MENU ITEM */
+    .menu-item {
+      background: var(--bg-card); border-radius: var(--radius-card);
+      border: 1px solid var(--border-color); padding: 16px 18px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      box-shadow: var(--shadow-card); transition: all var(--transition);
+      position: relative; overflow: hidden; animation: fadeUp 0.4s ease both;
+    }
+    .menu-item::before {
+      content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 4px;
+      background: var(--color-primary); transform: scaleY(0);
+      transition: transform var(--transition); border-radius: 0 4px 4px 0;
+    }
+    .menu-item:hover { transform: translateX(-3px); box-shadow: var(--shadow-hover); border-color: rgba(74,124,89,0.2); }
+    .menu-item:hover::before { transform: scaleY(1); }
+    .menu-item:nth-child(1) { animation-delay: 0.05s; }
+    .menu-item:nth-child(2) { animation-delay: 0.1s; }
+    .menu-item:nth-child(3) { animation-delay: 0.15s; }
+    .menu-item:nth-child(4) { animation-delay: 0.2s; }
+    .menu-item:nth-child(5) { animation-delay: 0.25s; }
+    .menu-item:nth-child(6) { animation-delay: 0.3s; }
+    .menu-item:nth-child(7) { animation-delay: 0.35s; }
+    .menu-item:nth-child(8) { animation-delay: 0.4s; }
+    .item-info { flex: 1; min-width: 0; }
+    .item-name { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; line-height: 1.4; }
+    .item-desc { font-size: 0.78rem; color: var(--text-muted); font-weight: 400; line-height: 1.5; }
+    .item-price-box { flex-shrink: 0; text-align: left; }
+    .item-price { font-size: 1.1rem; font-weight: 800; color: var(--color-primary); white-space: nowrap; direction: ltr; }
+    .item-price-dual { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+    .price-label { font-size: 0.65rem; color: var(--text-muted); font-weight: 500; direction: rtl; }
+    .dual-row { display: flex; gap: 10px; align-items: center; }
+    .dual-price { display: flex; flex-direction: column; align-items: center; }
+    .dual-divider { width: 1px; height: 28px; background: var(--border-color); }
+    .price-number { font-size: 1.1rem; font-weight: 800; color: var(--color-primary); }
+    .price-unit { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
+    .dual-toman { font-size: 0.6rem; color: var(--text-muted); }
+
+    /* INFO CARDS */
+    .info-card {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      border-radius: var(--radius-card); padding: 20px; margin-bottom: 12px; color: white; text-align: center;
+    }
+    .info-card .title { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .info-card .subtitle { font-size: 0.82rem; opacity: 0.8; line-height: 1.6; }
+    .info-card .handle { font-size: 1rem; font-weight: 800; color: var(--color-accent); margin-top: 8px; display: block; }
+    .info-card.accent { background: linear-gradient(135deg, var(--color-accent), #b8935a); }
+
+    /* NO RESULTS */
+    .no-results { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .no-results .icon { font-size: 3rem; margin-bottom: 16px; display: block; }
+    .no-results h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; }
+
+    /* DIVIDER */
+    .section-divider { text-align: center; color: var(--text-muted); font-size: 0.75rem; margin: 8px 0 32px; display: flex; align-items: center; gap: 12px; }
+    .section-divider::before, .section-divider::after { content: ""; flex: 1; height: 1px; background: var(--border-color); }
+
+    /* FOOTER */
+    .site-footer { background: var(--color-primary-dark); color: rgba(255,255,255,0.7); text-align: center; padding: 28px 20px; font-size: 0.8rem; }
+    .site-footer .footer-logo { font-size: 1.1rem; font-weight: 900; color: white; letter-spacing: 3px; margin-bottom: 8px; display: block; }
+    .site-footer .instagram { color: var(--color-accent); font-weight: 700; }
+    .site-footer .order-cta { margin-top: 12px; font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+    .site-footer .phone-number { margin-top: 12px; font-size: 1.1rem; font-weight: 800; color: var(--color-accent-light); letter-spacing: 1px; direction: ltr; display: inline-block; }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--text-primary); color: var(--bg-main); padding: 10px 20px;
+      border-radius: 50px; font-size: 0.85rem; font-weight: 500; opacity: 0;
+      transition: all 0.3s ease; z-index: 300; white-space: nowrap; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* FAB */
+    .fab {
+      position: fixed; bottom: 24px; left: 24px; width: 52px; height: 52px; border-radius: 50%;
+      background: var(--color-primary); color: white; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+      box-shadow: 0 4px 20px rgba(74,124,89,0.4); transition: all var(--transition); z-index: 200;
+    }
+    .fab:hover { background: var(--color-primary-dark); transform: scale(1.1) rotate(90deg); }
+    .fab.loading { animation: spin 0.8s linear infinite; }
+    .back-to-top {
+      position: fixed; bottom: 24px; right: 24px; width: 52px; height: 52px; border-radius: 50%;
+      background: var(--color-accent); color: white; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+      box-shadow: 0 4px 20px rgba(200,169,110,0.4); transition: all var(--transition); z-index: 200;
+      opacity: 0; transform: translateY(20px); pointer-events: none;
+    }
+    .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .back-to-top:hover { background: #b8935a; transform: translateY(-3px); }
+
+    .helper-text { text-align: center; margin-top: 20px; color: var(--text-muted); font-size: 0.8rem; }
+
+    @media (max-width: 480px) {
+      .header-image-wrapper { padding: 24px 16px 12px; }
+      .header-image { max-width: 200px; width: 55%; padding: 14px 18px; }
+      .order-notice-text { font-size: 0.82rem; }
+      .item-name { font-size: 0.93rem; }
+      .item-price { font-size: 1rem; }
+      .category-title { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOADING SCREEN -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="loading-logo">EDRIS <span>CAFE</span></div>
+    <div class="loading-spinner"></div>
+    <p class="loading-text">در حال بارگذاری منو...</p>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-image-wrapper">
+      <img
+        src="https://raw.githubusercontent.com/parhamfr8/cofe-edris/main/ok%2Btablo%2B_page-00012.svg"
+        alt="Edris Cafe Logo - کافه ادریس"
+        class="header-image"
+        onerror="this.style.display='none'"
+      />
+    </div>
+    <div class="header-overlay-content">
+      <div class="order-notice-text">☕ لطفا برای ثبت سفارش به صندوق مراجعه کنید</div>
+      <div class="cafe-tagline">منوی دیجیتال • @CAFE EDRIS</div>
+      <div style="margin-top: 12px;">
+        <span class="data-badge" id="data-badge">
+          <span class="dot offline" id="status-dot"></span>
+          <span id="status-text">منوی پیش‌فرض</span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTROLS BAR -->
+  <div class="controls-bar">
+    <div class="controls-inner">
+      <div class="search-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" class="search-input" placeholder="جستجو در منو..." autocomplete="off" />
+      </div>
+      <button class="dark-toggle" id="dark-toggle" title="تغییر تم" aria-label="Dark mode toggle">🌙</button>
+    </div>
+  </div>
+
+  <!-- CATEGORY NAV -->
+  <div class="category-nav-wrapper">
+    <nav class="category-nav" id="category-nav" role="navigation" aria-label="دسته‌بندی‌های منو"></nav>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content" id="main-content"></main>
+
+  <!-- BACK TO TOP -->
+  <button class="back-to-top" id="back-to-top" title="بازگشت به بالا" aria-label="Back to top">↑</button>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <span class="footer-logo">ΣDRIS CAFΣ</span>
+    <p>برای ثبت سفارش به صندوق مراجعه کنید</p>
+    <p class="instagram">📸 @CAFE EDRIS</p>
+    <p class="order-cta">استوری از سفارشاتت یادت نره — ما رو هم تگ کن ♥</p>
+    <div class="phone-number">📞 ۰۹۳۷۲۹۸۱۶۵۴</div>
+  </footer>
+
+  <!-- REFRESH FAB -->
+  <button class="fab" id="refresh-btn" title="بروزرسانی منو" aria-label="Refresh menu">↻</button>
+
+  <script>
+    const GOOGLE_SHEETS_URL = 'https://opensheet.elk.sh/1El51ttvAdPyyfRJU2q_W4ft4ckHKiOZQeAHt-Ol7HBQ/cofe%20edris';
+
+    const CATEGORY_ICONS = {
+      'صبحانه': '🍳', 'ساندویچ': '🥪', 'بر پایه اسپرسو': '☕', 'فراپاچینو': '🧋',
+      'شیک': '🥤', 'کیک و شیرینی': '🎂', 'نوشیدنی گرم': '🍵', 'نوشیدنی سرد': '🧊',
+      'قهوه دمی': '☕', 'گلاسه': '🍧', 'چای و دمنوش': '🌿', 'ماکتل': '🍹',
+      'اضافات': '➕', 'کادو فروشی': '🎁'
+    };
+
+    const CATEGORY_ORDER = [
+      'صبحانه', 'ساندویچ', 'بر پایه اسپرسو', 'فراپاچینو', 'شیک',
+      'کیک و شیرینی', 'نوشیدنی گرم', 'نوشیدنی سرد', 'قهوه دمی',
+      'گلاسه', 'چای و دمنوش', 'ماکتل', 'اضافات', 'کادو فروشی'
+    ];
+
+    const DEFAULT_MENU = [
+      { category: 'صبحانه', name: 'قیساوا خرما', price: 220, active: true },
+      { category: 'صبحانه', name: 'نیمرو ساده', price: 150, active: true },
+      { category: 'صبحانه', name: 'نیمرو همزده', price: 150, active: true },
+      { category: 'صبحانه', name: 'املت', price: 160, active: true },
+      { category: 'صبحانه', name: 'شاپوری', price: 195, active: true },
+      { category: 'صبحانه', name: 'سوسیس تخم‌مرغ', price: 180, active: true },
+      { category: 'صبحانه', name: 'پنیر برشته', price: 197, active: true },
+      { category: 'صبحانه', name: 'لوبیا', price: 170, active: true },
+      { category: 'صبحانه', name: 'عدسی', price: 145, active: true },
+      { category: 'صبحانه', name: 'نان پنیر گردو', price: 150, active: true },
+      { category: 'صبحانه', name: 'نان کره عسل + چای', price: 160, active: true },
+      { category: 'صبحانه', name: 'نیمرو اسفناج', price: 160, active: true },
+      { category: 'صبحانه', name: 'گردو', price: 45, active: true },
+      { category: 'صبحانه', name: 'خیار و گوجه', price: 25, active: true },
+      { category: 'صبحانه', name: 'زیتون', price: 45, active: true },
+      { category: 'ساندویچ', name: 'فیله مرغ', price: 159, active: true },
+      { category: 'ساندویچ', name: 'کوکو سیب‌زمینی', price: 139, active: true },
+      { category: 'ساندویچ', name: 'سالاد ماکارونی', price: 139, active: true },
+      { category: 'ساندویچ', name: 'ساندویچ سرد', price: 139, active: true },
+      { category: 'بر پایه اسپرسو', name: 'اسپرسو', price: '137 / 107', active: true, desc: 'عربیکا / ریوستا' },
+      { category: 'بر پایه اسپرسو', name: 'آمریکانو', price: '141 / 112', active: true, desc: 'عربیکا / ریوستا' },
+      { category: 'بر پایه اسپرسو', name: 'کاپوچینو', price: '161 / 137', active: true, desc: 'عربیکا / ریوستا' },
+      { category: 'بر پایه اسپرسو', name: 'لاته', price: '161 / 137', active: true, desc: 'عربیکا / ریوستا' },
+      { category: 'بر پایه اسپرسو', name: 'لاته لوتوس', price: '193 / 169', active: true, desc: 'لاته، کره لوتوس' },
+      { category: 'بر پایه اسپرسو', name: 'لاته نوتلا', price: '193 / 169', active: true, desc: 'لاته، اسپرسو، نوتلا' },
+      { category: 'بر پایه اسپرسو', name: 'موکا', price: '193 / 169', active: true, desc: 'شیر، اسپرسو، شکلات' },
+      { category: 'بر پایه اسپرسو', name: 'موکا شکلات سفید', price: '196 / 172', active: true },
+      { category: 'بر پایه اسپرسو', name: 'کارامل ماکیاتو', price: '196 / 172', active: true, desc: 'شیر، اسپرسو، کارامل' },
+      { category: 'بر پایه اسپرسو', name: 'فلت وایت', price: '161 / 137', active: true },
+      { category: 'بر پایه اسپرسو', name: 'کورتادو', price: '147 / 123', active: true },
+      { category: 'بر پایه اسپرسو', name: 'کن پانا', price: '177 / 153', active: true, desc: 'اسپرسو، خامه' },
+      { category: 'بر پایه اسپرسو', name: 'آفوگاتو', price: '186 / 162', active: true, desc: 'اسپرسو، بستنی' },
+      { category: 'بر پایه اسپرسو', name: 'فرش پرسو', price: '181 / 157', active: true, desc: 'اسپرسو، هایپ' },
+      { category: 'بر پایه اسپرسو', name: 'کافه ژلاتو', price: '196 / 172', active: true, desc: 'بستنی، کارامل، اسپرسو' },
+      { category: 'بر پایه اسپرسو', name: 'آیس رومانو', price: '173 / 150', active: true, desc: 'اسپرسو، لیمو' },
+      { category: 'بر پایه اسپرسو', name: 'آیس لاته', price: '173 / 149', active: true },
+      { category: 'بر پایه اسپرسو', name: 'آیس موکا', price: '203 / 180', active: true },
+      { category: 'بر پایه اسپرسو', name: 'آیس آمریکانو', price: '147 / 117', active: true },
+      { category: 'بر پایه اسپرسو', name: 'اسپرسو ماکیاتو', price: '145 / 115', active: true },
+      { category: 'فراپاچینو', name: 'موکا', price: 233, active: true },
+      { category: 'فراپاچینو', name: 'اسپرسو', price: 219, active: true },
+      { category: 'فراپاچینو', name: 'کارامل', price: 233, active: true },
+      { category: 'شیک', name: 'لوتوس', price: 251, active: true },
+      { category: 'شیک', name: 'کوکی نوتلا', price: 260, active: true },
+      { category: 'شیک', name: 'تیرامیسو', price: 251, active: true },
+      { category: 'شیک', name: 'پروتئین', price: 269, active: true },
+      { category: 'کیک و شیرینی', name: 'کیک روز', price: 'قیمت روز', active: true },
+      { category: 'کیک و شیرینی', name: 'چیزکیک روز', price: 'قیمت روز', active: true },
+      { category: 'کیک و شیرینی', name: 'شیرینی روز', price: 'قیمت روز', active: true },
+      { category: 'کیک و شیرینی', name: 'شکلاتی', price: 'قیمت روز', active: true },
+      { category: 'کیک و شیرینی', name: 'تیرامیسو', price: 'قیمت روز', active: true },
+      { category: 'کیک و شیرینی', name: 'دونات', price: 'قیمت روز', active: true },
+      { category: 'کیک و شیرینی', name: 'کوکی رژیمی', price: 'قیمت روز', active: true },
+      { category: 'نوشیدنی گرم', name: 'شیر کارامل', price: 108, active: true },
+      { category: 'نوشیدنی گرم', name: 'چاکلت فلکس', price: 158, active: true },
+      { category: 'نوشیدنی گرم', name: 'چاکلت کارامل', price: 174, active: true },
+      { category: 'نوشیدنی گرم', name: 'هات چاکلت', price: 129, active: true },
+      { category: 'نوشیدنی گرم', name: 'وایت چاکلت', price: 129, active: true },
+      { category: 'نوشیدنی گرم', name: 'چای لاته', price: 139, active: true },
+      { category: 'نوشیدنی گرم', name: 'ماسالا', price: 140, active: true },
+      { category: 'نوشیدنی گرم', name: 'ماسالا زعفرانی', price: 171, active: true },
+      { category: 'نوشیدنی گرم', name: 'شیر نسکافه', price: 125, active: true },
+      { category: 'نوشیدنی گرم', name: 'چاکلت فندق', price: 174, active: true },
+      { category: 'نوشیدنی سرد', name: 'آیس نسکافه', price: 133, active: true },
+      { category: 'نوشیدنی سرد', name: 'آیس چاکلت', price: 142, active: true },
+      { category: 'نوشیدنی سرد', name: 'آیس چاکلت سفید', price: 142, active: true },
+      { category: 'نوشیدنی سرد', name: 'هایپ', price: null, active: true, desc: 'قیمت روز' },
+      { category: 'نوشیدنی سرد', name: 'آب معدنی', price: null, active: true, desc: 'قیمت روز' },
+      { category: 'قهوه دمی', name: 'گلد برو', price: 169, active: true },
+      { category: 'قهوه دمی', name: 'ترک', price: 137, active: true },
+      { category: 'قهوه دمی', name: 'فرانسه', price: 153, active: true },
+      { category: 'قهوه دمی', name: 'یونانی', price: 145, active: true },
+      { category: 'گلاسه', name: 'اسپرسو', price: 187, active: true },
+      { category: 'گلاسه', name: 'شکلات', price: 209, active: true },
+      { category: 'گلاسه', name: 'آناناس', price: 200, active: true },
+      { category: 'چای و دمنوش', name: 'چای', price: 77, active: true },
+      { category: 'چای و دمنوش', name: 'چای زعفرانی', price: 122, active: true },
+      { category: 'چای و دمنوش', name: 'چای سبز', price: 127, active: true },
+      { category: 'چای و دمنوش', name: 'چای ترش', price: 127, active: true },
+      { category: 'چای و دمنوش', name: 'دمنوش زعفران', price: 139, active: true },
+      { category: 'چای و دمنوش', name: 'دمنوش بابونه', price: 133, active: true },
+      { category: 'چای و دمنوش', name: 'دمنوش جنسینگ', price: 135, active: true },
+      { category: 'چای و دمنوش', name: 'دمنوش گل گاو زبان', price: 133, active: true },
+      { category: 'چای و دمنوش', name: 'دمنوش اسطوخودوس', price: 130, active: true },
+      { category: 'چای و دمنوش', name: 'دمنوش توت', price: 135, active: true },
+      { category: 'چای و دمنوش', name: 'دمنوش استوایی', price: 130, active: true },
+      { category: 'چای و دمنوش', name: 'دمنوش آویشن', price: 123, active: true },
+      { category: 'چای و دمنوش', name: 'دمنوش بهار نارنج', price: 123, active: true },
+      { category: 'چای و دمنوش', name: 'دمنوش سیب و دارچین', price: 130, active: true },
+      { category: 'چای و دمنوش', name: 'دمنوش آرامش', price: 160, active: true },
+      { category: 'ماکتل', name: 'موهیتو', price: 160, active: true },
+      { category: 'ماکتل', name: 'لیموناد', price: 145, active: true },
+      { category: 'ماکتل', name: 'هاوایی', price: 190, active: true, desc: 'فارفیل، آناناس' },
+      { category: 'ماکتل', name: 'بلوبری رفرش', price: 153, active: true },
+      { category: 'ماکتل', name: 'مارگاریتا', price: 163, active: true, desc: 'پرتقال، لیمو' },
+      { category: 'ماکتل', name: 'گرین', price: 160, active: true, desc: 'سیب، آناناس، آلوورا' },
+      { category: 'ماکتل', name: 'سرخ', price: 167, active: true, desc: 'پرتقال، توت فرنگی' },
+      { category: 'ماکتل', name: 'بلو منگو', price: 193, active: true, desc: 'آلبه، پرتقال، دارچین' },
+      { category: 'ماکتل', name: 'بامبوک', price: 193, active: true, desc: 'آقار، زرشک، آلبالو، لیمو' },
+      { category: 'ماکتل', name: 'ملون رد', price: 154, active: true, desc: 'هندوانه، پرتقال' },
+      { category: 'اضافات', name: 'سیروپ', price: 57, active: true, desc: 'کارامل، فندق، وانیل، شکلات، دارچین' },
+      { category: 'اضافات', name: 'خامه، بستنی، عسل، شیر', price: null, active: true, desc: 'قیمت روز' },
+      { category: 'اضافات', name: 'لیمو، یخ، دارچین، زنجبیل', price: null, active: true, desc: 'قیمت روز' },
+      { category: 'کادو فروشی', name: 'یه گوشه کافمون', price: null, active: true, desc: 'پر از چیزهای خوشگل و بامزه — برای هدیه و کادو داریم' }
+    ];
+
+    let currentData = [];
+    let isOnline = false;
+    let currentSearch = '';
+    let isDarkMode = false;
+
+    const loadingScreen = document.getElementById('loading-screen');
+    const toast = document.getElementById('toast');
+    const searchInput = document.getElementById('search-input');
+    const darkToggle = document.getElementById('dark-toggle');
+    const categoryNav = document.getElementById('category-nav');
+    const mainContent = document.getElementById('main-content');
+    const backToTopBtn = document.getElementById('back-to-top');
+    const refreshBtn = document.getElementById('refresh-btn');
+    const statusDot = document.getElementById('status-dot');
+    const statusText = document.getElementById('status-text');
+
+    function formatPrice(price) {
+      if (price === null || price === undefined || price === '') return null;
+      if (typeof price === 'string') {
+        const trimmed = price.trim();
+        if (!trimmed) return null;
+        const num = Number(trimmed);
+        if (!isNaN(num)) return num.toLocaleString('fa-IR');
+        return trimmed;
+      }
+      return Number(price).toLocaleString('fa-IR');
+    }
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function groupByCategory(items) {
+      const grouped = {};
+      items.forEach(item => {
+        const cat = (item.category || '').trim();
+        if (!cat) return;
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(item);
+      });
+      return grouped;
+    }
+
+    function sortedCategories(grouped) {
+      const cats = Object.keys(grouped);
+      return [...cats].sort((a, b) => {
+        const ia = CATEGORY_ORDER.indexOf(a);
+        const ib = CATEGORY_ORDER.indexOf(b);
+        if (ia === -1 && ib === -1) return a.localeCompare(b, 'fa');
+        if (ia === -1) return 1;
+        if (ib === -1) return -1;
+        return ia - ib;
+      });
+    }
+
+    function renderPriceHTML(price) {
+      const formatted = formatPrice(price);
+      const isSpecialPrice = typeof price === 'string' && isNaN(Number(price));
+
+      if (!formatted) {
+        return '<span class="item-price" style="color:var(--text-muted);font-size:0.8rem;">قیمت روز</span>';
+      }
+
+      if (isSpecialPrice) {
+        if (formatted.includes('/')) {
+          const parts = formatted.split('/').map(s => s.trim());
+          return `
+            <div class="item-price-dual">
+              <div class="dual-row">
+                <div class="dual-price">
+                  <span class="price-label">عربیکا</span>
+                  <span class="price-number">${parts[0]}</span>
+                </div>
+                <div class="dual-divider"></div>
+                <div class="dual-price">
+                  <span class="price-label">ریوستا</span>
+                  <span class="price-number">${parts[1]}</span>
+                </div>
+              </div>
+              <span class="dual-toman">تومان</span>
+            </div>`;
+        }
+        return `<span class="item-price" style="color:var(--text-muted);font-size:0.82rem;">${formatted}</span>`;
+      }
+
+      return `<span class="item-price"><span class="price-number">${formatted}</span><span class="price-unit"> ت</span></span>`;
+    }
+
+    function renderItem(item) {
+      const name = (item.name || '').trim();
+      const desc = item.desc || '';
+      const priceHTML = renderPriceHTML(item.price);
+
+      return `
+        <div class="menu-item">
+          <div class="item-info">
+            <div class="item-name">${name}</div>
+            ${desc ? `<div class="item-desc">${desc}</div>` : ''}
+          </div>
+          <div class="item-price-box">${priceHTML}</div>
+        </div>`;
+    }
+
+    function renderMenu(data, searchQuery = '') {
+      let items = data.filter(item => {
+        const active = item.active;
+        return active === true || active === 'TRUE' || active === 'true' || active === 1 || active === '1' || active === 'بله' || active === 'فعال';
+      });
+
+      if (items.length === 0 && data.length > 0) items = data;
+
+      if (searchQuery.trim()) {
+        const q = searchQuery.trim().toLowerCase();
+        items = items.filter(item => {
+          const name = (item.name || '').toLowerCase();
+          const cat = (item.category || '').toLowerCase();
+          const desc = (item.desc || '').toLowerCase();
+          return name.includes(q) || cat.includes(q) || desc.includes(q);
+        });
+      }
+
+      const grouped = groupByCategory(items);
+      const cats = sortedCategories(grouped);
+
+      let navHTML = '<button class="cat-pill active" data-cat="all">همه</button>';
+      cats.forEach(cat => {
+        const icon = CATEGORY_ICONS[cat] || '•';
+        navHTML += `<button class="cat-pill" data-cat="${cat}">${icon} ${cat}</button>`;
+      });
+      categoryNav.innerHTML = navHTML;
+
+      document.querySelectorAll('.cat-pill').forEach(pill => {
+        pill.addEventListener('click', function() { scrollToCat(this.dataset.cat, this); });
+      });
+
+      if (cats.length === 0) {
+        mainContent.innerHTML = `
+          <div class="no-results">
+            <span class="icon">🔍</span>
+            <h3>نتیجه‌ای یافت نشد</h3>
+            <p>«${searchQuery}» در منو موجود نیست</p>
+          </div>`;
+        return;
+      }
+
+      let contentHTML = '';
+      cats.forEach((cat, idx) => {
+        const catItems = grouped[cat];
+        const icon = CATEGORY_ICONS[cat] || '☕';
+        const delay = idx * 0.08;
+
+        contentHTML += `
+          <section class="category-section" id="cat-${cat}" data-category="${cat}" style="animation-delay:${delay}s">
+            <div class="category-header">
+              <div class="category-icon">${icon}</div>
+              <h2 class="category-title">${cat}</h2>
+              <span class="category-count">${catItems.length} آیتم</span>
+            </div>
+            <div class="items-grid">${catItems.map(item => renderItem(item)).join('')}</div>
+          </section>`;
+
+        if (idx < cats.length - 1) contentHTML += '<div class="section-divider">✦</div>';
+      });
+
+      if (!searchQuery) {
+        contentHTML += `
+          <div class="info-card" style="margin-top:32px;">
+            <div class="title">📸 استوری از سفارشاتت یادت نره!</div>
+            <div class="subtitle">ما رو هم تگ کن، خوشحال میشیم</div>
+            <span class="handle">@CAFE EDRIS</span>
+          </div>
+          <div class="info-card accent">
+            <div class="title">🎁 کادو فروشی</div>
+            <div class="subtitle">یه گوشه کافمون، پر از چیزهای خوشگل و بامزه<br>برای هدیه و کادو داریم — حتماً سر بزن!</div>
+          </div>
+          <p class="helper-text">برای ثبت سفارش به صندوق مراجعه کنید</p>`;
+      }
+
+      mainContent.innerHTML = contentHTML;
+      setupScrollSpy();
+    }
+
+    function setupScrollSpy() {
+      const sections = document.querySelectorAll('.category-section');
+      if (!sections.length) return;
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const cat = entry.target.dataset.category;
+            document.querySelectorAll('.cat-pill').forEach(pill => {
+              pill.classList.toggle('active', pill.dataset.cat === cat);
+              if (pill.dataset.cat === cat) {
+                pill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+              }
+            });
+          }
+        });
+      }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+
+      sections.forEach(s => observer.observe(s));
+    }
+
+    function scrollToCat(cat, btn) {
+      document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (cat === 'all') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      const section = document.getElementById(`cat-${cat}`);
+      if (section) {
+        const offset = 135;
+        const top = section.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    }
+
+    async function fetchFromSheets() {
+      if (!GOOGLE_SHEETS_URL) return null;
+      try {
+        const res = await fetch(GOOGLE_SHEETS_URL, { cache: 'no-cache' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (!Array.isArray(data) || data.length === 0) throw new Error('Empty data');
+
+        return data.map(row => ({
+          category: row.Category || row.category || row['دسته'] || row['دسته‌بندی'] || '',
+          name: row.Name || row.name || row['نام'] || row['اسم'] || '',
+          price: row.Price || row.price || row['قیمت'] || null,
+          desc: row.Description || row.description || row.desc || row['توضیحات'] || row['توضیح'] || '',
+          active: row.Active !== undefined ? row.Active : (row.active !== undefined ? row.active : (row['فعال'] !== undefined ? row['فعال'] : 'TRUE'))
+        })).filter(row => row.category && row.name);
+      } catch (err) {
+        console.warn('⚠️ Sheets fetch failed:', err.message);
+        return null;
+      }
+    }
+
+    async function init() {
+      const savedTheme = localStorage.getItem('cafeedris-theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        isDarkMode = true;
+        darkToggle.textContent = '☀️';
+      }
+
+      const sheetsData = await fetchFromSheets();
+
+      if (sheetsData && sheetsData.length > 0) {
+        currentData = sheetsData;
+        isOnline = true;
+        statusDot.classList.remove('offline');
+        statusText.textContent = 'آنلاین — Google Sheets';
+        showToast('✅ منو از Google Sheets بارگذاری شد');
+      } else {
+        currentData = DEFAULT_MENU;
+        isOnline = false;
+        statusText.textContent = 'منوی پیش‌فرض';
+      }
+
+      renderMenu(currentData, currentSearch);
+      setTimeout(() => loadingScreen.classList.add('hidden'), 600);
+    }
+
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        currentSearch = this.value;
+        renderMenu(currentData, currentSearch);
+      }, 250);
+    });
+
+    darkToggle.addEventListener('click', function() {
+      isDarkMode = !isDarkMode;
+      if (isDarkMode) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        this.textContent = '☀️';
+        localStorage.setItem('cafeedris-theme', 'dark');
+        showToast('🌙 حالت تاریک فعال شد');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        this.textContent = '🌙';
+        localStorage.setItem('cafeedris-theme', 'light');
+        showToast('☀️ حالت روشن فعال شد');
+      }
+    });
+
+    refreshBtn.addEventListener('click', async function() {
+      this.classList.add('loading');
+      this.style.pointerEvents = 'none';
+      showToast('🔄 در حال بروزرسانی...');
+
+      const sheetsData = await fetchFromSheets();
+
+      if (sheetsData && sheetsData.length > 0) {
+        currentData = sheetsData;
+        isOnline = true;
+        statusDot.classList.remove('offline');
+        statusText.textContent = 'آنلاین — Google Sheets';
+        showToast('✅ منو بروزرسانی شد');
+      } else {
+        currentData = DEFAULT_MENU;
+        isOnline = false;
+        statusDot.classList.add('offline');
+        statusText.textContent = 'منوی پیش‌فرض';
+        showToast('⚠️ از منوی پیش‌فرض استفاده شد');
+      }
+
+      renderMenu(currentData, currentSearch);
+      this.classList.remove('loading');
+      this.style.pointerEvents = '';
+    });
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) backToTopBtn.classList.add('visible');
+      else backToTopBtn.classList.remove('visible');
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    init();
+  </script>
+</body>
+</html>
